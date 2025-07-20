@@ -1,0 +1,20 @@
+.todo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+.title {
+  color: black;
+  font-weight: 500;
+  background-color: #ffebeb;
+  border-radius: 10px;
+  padding: 0.3em 1em;
+  max-width: 300px;
+  word-break: break-all;
+  box-shadow: 3px 3px 5px rgb(0, 0, 0, 0.2);
+}
+.buttons {
+  display: flex;
+  gap: 10px;
+}
