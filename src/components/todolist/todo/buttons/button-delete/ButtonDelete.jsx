@@ -1,8 +1,13 @@
 import React from "react";
+import styles from "./ButtonDelete.module.css";
 
 function ButtonDelete({ id, requestDeleteTodo }) {
   return (
-    <button id={id} onClick={() => requestDeleteTodo(id)}>
+    <button
+      className={styles["button-delete"]}
+      id={id}
+      onClick={() => requestDeleteTodo(id)}
+    >
       Delete
     </button>
   );

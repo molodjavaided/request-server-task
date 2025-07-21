@@ -10,9 +10,11 @@ function App() {
     fetch("http://localhost:3000/todos")
       .then((loadedData) => loadedData.json())
       .then((loadedTodos) => {
-        setTodos(loadedTodos);
+        console.log(loadedTodos);
+
+        setTodos(loadedTodos.map((todo) => ({ ...todo, isEdit: false })));
       });
-  }, [todos]);
+  }, []);
 
   const requestAddTodo = (value) => {
     fetch("http://localhost:3000/todos", {
@@ -40,14 +42,43 @@ function App() {
         console.log("Задача удалена, ответ сервера:", response);
         setTodos(todos.filter((todo) => todo.id !== id));
       });
-    // .finally(() => setIsDeleting(false));
+  };
+
+  const requestUpdateTodo = (id, newTitle) => {
+    fetch(`http://localhost:3000/todos/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json;charset=utf-8" },
+      body: JSON.stringify({
+        title: newTitle,
+      }),
+    })
+      .then((rawResponse) => rawResponse.json())
+      .then((response) => {
+        console.log("Задача обновлена, ответ сервера:", response);
+        setTodos(
+          todos.map((todo) =>
+            todo.id === id ? { ...todo, title: newTitle, isEdit: false } : todo
+          )
+        );
+      });
+  };
+
+  const editTodo = (id) => {
+    setTodos(
+      todos.map((todo) => (todo.id === id ? { ...todo, isEdit: true } : todo))
+    );
   };
 
   return (
     <>
       <div className={styles.container}>
         <FormTodo requestAddTodo={requestAddTodo} />
-        <TodoList todos={todos} requestDeleteTodo={requestDeleteTodo} />
+        <TodoList
+          todos={todos}
+          requestUpdateTodo={requestUpdateTodo}
+          requestDeleteTodo={requestDeleteTodo}
+          editTodo={editTodo}
+        />
       </div>
     </>
   );

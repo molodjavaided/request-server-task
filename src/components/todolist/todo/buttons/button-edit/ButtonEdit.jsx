@@ -1,8 +1,13 @@
 import React from "react";
+import styles from "./ButtonEdit.module.css";
 
-function ButtonEdit(id, onClick) {
+function ButtonEdit({ id, editTodo }) {
   return (
-    <button id={id} onClick={onClick}>
+    <button
+      className={styles["button-edit"]}
+      id={id}
+      onClick={() => editTodo(id)}
+    >
       Edit
     </button>
   );
