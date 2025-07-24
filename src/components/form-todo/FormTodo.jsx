@@ -35,15 +35,6 @@ function FormTodo({ requestAddTodo }) {
         </form>
       )}
     </>
-    // <form className={styles.form} onSubmit={handleSubmit}>
-    //   <input
-    //     type="text"
-    //     value={value}
-    //     placeholder="Введите задачу"
-    //     onChange={handleChange}
-    //   />
-    //   <ButtonAdd />
-    // </form>
   );
 }
 

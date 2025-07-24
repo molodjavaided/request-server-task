@@ -51,4 +51,5 @@ input {
   border: 2px solid #fff;
   border-radius: 10px 0 0 10px;
   box-shadow: 3px 3px 5px rgb(0, 0, 0, 0.2);
+  outline: none;
 }

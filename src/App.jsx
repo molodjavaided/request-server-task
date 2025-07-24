@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import TodoList from "./components/todolist/TodoList";
 import styles from "./App.module.css";
 import FormTodo from "./components/form-todo/FormTodo";
+import SearchTodo from "./components/search-todo/SearchTodo";
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [searchTodos, setSearchTodos] = useState([]);
 
   const fetchPosts = async () => {
     setIsLoading(true);
@@ -27,6 +29,10 @@ function App() {
   useEffect(() => {
     fetchPosts();
   }, []);
+
+  useEffect(() => {
+    setSearchTodos(todos);
+  }, [todos]);
 
   const requestAddTodo = async (value) => {
     try {
@@ -98,6 +104,18 @@ function App() {
     );
   };
 
+  const searchTodo = (value) => {
+    if (!value.trim()) {
+      setSearchTodos(todos);
+    } else {
+      setSearchTodos(
+        todos.filter((todo) =>
+          todo.title.toLowerCase().includes(value.toLowerCase())
+        )
+      );
+    }
+  };
+
   if (isLoading) {
     return <div className={styles.loader}></div>;
   }
@@ -109,8 +127,11 @@ function App() {
     <>
       <div className={styles.container}>
         <FormTodo requestAddTodo={requestAddTodo} />
+
+        <SearchTodo searchTodo={searchTodo} />
+
         <TodoList
-          todos={todos}
+          todos={searchTodos}
           requestUpdateTodo={requestUpdateTodo}
           requestDeleteTodo={requestDeleteTodo}
           editTodo={editTodo}
