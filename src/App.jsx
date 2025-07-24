@@ -3,12 +3,14 @@ import TodoList from "./components/todolist/TodoList";
 import styles from "./App.module.css";
 import FormTodo from "./components/form-todo/FormTodo";
 import SearchTodo from "./components/search-todo/SearchTodo";
+import ButtonSorting from "./components/buttons/ButtonSorting";
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [searchTodos, setSearchTodos] = useState([]);
+  const [isSorted, setIsSorted] = useState(false);
 
   const fetchPosts = async () => {
     setIsLoading(true);
@@ -116,6 +118,17 @@ function App() {
     }
   };
 
+  const sorting = () => {
+    if (!isSorted) {
+      setSearchTodos(
+        [...searchTodos].sort((a, b) => a.title.localeCompare(b.title))
+      );
+    } else {
+      setSearchTodos(todos);
+    }
+    setIsSorted(!isSorted);
+  };
+
   if (isLoading) {
     return <div className={styles.loader}></div>;
   }
@@ -127,8 +140,10 @@ function App() {
     <>
       <div className={styles.container}>
         <FormTodo requestAddTodo={requestAddTodo} />
-
-        <SearchTodo searchTodo={searchTodo} />
+        <div className={styles["wrapper-search-sorting"]}>
+          <ButtonSorting sorting={sorting} isSorted={isSorted} />
+          <SearchTodo searchTodo={searchTodo} />
+        </div>
 
         <TodoList
           todos={searchTodos}

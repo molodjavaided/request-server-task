@@ -1,11 +1,6 @@
 {
   "todos": [
     {
-      "title": "Погулять",
-      "completed": false,
-      "id": 1
-    },
-    {
       "title": "Приготовить ужин",
       "completed": false,
       "id": 2

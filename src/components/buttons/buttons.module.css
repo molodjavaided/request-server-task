@@ -14,3 +14,7 @@
 .button-cancel {
   border-radius: 0 10px 10px 0;
 }
+.button-sorting {
+  width: 170px;
+  border-radius: 10px 0 0 10px;
+}
