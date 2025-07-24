@@ -1,0 +1,10 @@
+.form {
+  display: flex;
+}
+
+.buttons {
+  display: flex;
+}
+.updating {
+  color: #ee4848;
+}

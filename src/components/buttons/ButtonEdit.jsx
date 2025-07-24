@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./ButtonEdit.module.css";
+import styles from "./buttons.module.css";
 
 function ButtonEdit({ id, editTodo }) {
   return (

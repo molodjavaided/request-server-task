@@ -3,7 +3,9 @@
   margin: 50px;
 }
 
-.button-add {
-  width: 145px;
-  border-radius: 0 10px 10px 0;
+.addendum {
+  display: flex;
+  margin: 50px;
+  width: 385px;
+  color: red;
 }
