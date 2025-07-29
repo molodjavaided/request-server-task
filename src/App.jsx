@@ -16,10 +16,12 @@ function App() {
   });
   const [valueSearch, setValueSearch] = useState("");
 
-  const debouncedSearchTerm = useDebounce(valueSearch, 2000);
+  const debouncedSearchTerm = useDebounce(valueSearch, 500);
 
   const fetchPosts = async (path, order, value) => {
     setIsLoading(true);
+    console.log(value);
+
     try {
       const responce = await fetch(
         `http://localhost:3000/todos?_sort=${path}&_order=${order}&q=${value}`
@@ -134,7 +136,7 @@ function App() {
         <FormTodo requestAddTodo={requestAddTodo} />
         <div className={styles["wrapper-search-sorting"]}>
           <ButtonSorting handleSort={handleSort} />
-          <SearchTodo value={valueSearch} handleSearch={handleSearch} />
+          <SearchTodo valueSearch={valueSearch} handleSearch={handleSearch} />
         </div>
 
         <TodoList
