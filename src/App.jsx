@@ -4,18 +4,26 @@ import styles from "./App.module.css";
 import FormTodo from "./components/form-todo/FormTodo";
 import SearchTodo from "./components/search-todo/SearchTodo";
 import ButtonSorting from "./components/buttons/ButtonSorting";
+import { useDebounce } from "@uidotdev/usehooks";
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [searchTodos, setSearchTodos] = useState([]);
-  const [isSorted, setIsSorted] = useState(false);
+  const [sortByOrder, setSortByOrder] = useState({
+    path: "title",
+    order: "desc",
+  });
+  const [valueSearch, setValueSearch] = useState("");
 
-  const fetchPosts = async () => {
+  const debouncedSearchTerm = useDebounce(valueSearch, 2000);
+
+  const fetchPosts = async (path, order, value) => {
     setIsLoading(true);
     try {
-      const responce = await fetch("http://localhost:3000/todos");
+      const responce = await fetch(
+        `http://localhost:3000/todos?_sort=${path}&_order=${order}&q=${value}`
+      );
       if (!responce.ok) {
         throw new Error("Ошибка в запросе на сервер");
       }
@@ -29,12 +37,8 @@ function App() {
   };
 
   useEffect(() => {
-    fetchPosts();
-  }, []);
-
-  useEffect(() => {
-    setSearchTodos(todos);
-  }, [todos]);
+    fetchPosts(sortByOrder.path, sortByOrder.order, debouncedSearchTerm);
+  }, [sortByOrder.path, sortByOrder.order, debouncedSearchTerm]);
 
   const requestAddTodo = async (value) => {
     try {
@@ -106,27 +110,15 @@ function App() {
     );
   };
 
-  const searchTodo = (value) => {
-    if (!value.trim()) {
-      setSearchTodos(todos);
-    } else {
-      setSearchTodos(
-        todos.filter((todo) =>
-          todo.title.toLowerCase().includes(value.toLowerCase())
-        )
-      );
-    }
+  const handleSearch = (e) => {
+    setValueSearch(e.target.value);
   };
 
-  const sorting = () => {
-    if (!isSorted) {
-      setSearchTodos(
-        [...searchTodos].sort((a, b) => a.title.localeCompare(b.title))
-      );
-    } else {
-      setSearchTodos(todos);
-    }
-    setIsSorted(!isSorted);
+  const handleSort = () => {
+    setSortByOrder({
+      path: "title",
+      order: sortByOrder.order === "desc" ? "asc" : "desc",
+    });
   };
 
   if (isLoading) {
@@ -141,12 +133,12 @@ function App() {
       <div className={styles.container}>
         <FormTodo requestAddTodo={requestAddTodo} />
         <div className={styles["wrapper-search-sorting"]}>
-          <ButtonSorting sorting={sorting} isSorted={isSorted} />
-          <SearchTodo searchTodo={searchTodo} />
+          <ButtonSorting handleSort={handleSort} />
+          <SearchTodo value={valueSearch} handleSearch={handleSearch} />
         </div>
 
         <TodoList
-          todos={searchTodos}
+          todos={todos}
           requestUpdateTodo={requestUpdateTodo}
           requestDeleteTodo={requestDeleteTodo}
           editTodo={editTodo}
