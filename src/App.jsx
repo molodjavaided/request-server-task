@@ -5,6 +5,9 @@ import FormTodo from "./components/form-todo/FormTodo";
 import SearchTodo from "./components/search-todo/SearchTodo";
 import ButtonSorting from "./components/buttons/ButtonSorting";
 import { useDebounce } from "@uidotdev/usehooks";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import TodoPage from "./components/todo-page/TodoPage";
+import Todo from "./components/todo/Todo";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -15,21 +18,21 @@ function App() {
     order: "desc",
   });
   const [valueSearch, setValueSearch] = useState("");
+  const navigate = useNavigate();
 
   const debouncedSearchTerm = useDebounce(valueSearch, 500);
 
-  const fetchPosts = async (path, order, value) => {
+  const fetchTodo = async (path, order, value) => {
     setIsLoading(true);
-    console.log(value);
 
     try {
-      const responce = await fetch(
+      const response = await fetch(
         `http://localhost:3000/todos?_sort=${path}&_order=${order}&q=${value}`
       );
-      if (!responce.ok) {
+      if (!response.ok) {
         throw new Error("Ошибка в запросе на сервер");
       }
-      const data = await responce.json();
+      const data = await response.json();
       setTodos(data);
       setIsLoading(false);
     } catch (error) {
@@ -39,7 +42,7 @@ function App() {
   };
 
   useEffect(() => {
-    fetchPosts(sortByOrder.path, sortByOrder.order, debouncedSearchTerm);
+    fetchTodo(sortByOrder.path, sortByOrder.order, debouncedSearchTerm);
   }, [sortByOrder.path, sortByOrder.order, debouncedSearchTerm]);
 
   const requestAddTodo = async (value) => {
@@ -72,6 +75,7 @@ function App() {
       }
       const data = await response.json();
       setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+      navigate("/");
     } catch (error) {
       setError(error);
     }
@@ -91,25 +95,13 @@ function App() {
       }
       const data = await response.json();
       setTodos((prevTodos) =>
-        prevTodos.map((todo) =>
-          todo.id === id ? { ...todo, title: newTitle, isEdit: false } : todo
-        )
+        prevTodos.map((todo) => (todo.id === id ? data : todo))
       );
+      navigate("/");
+      console.log(data, id, newTitle);
     } catch (error) {
       setError(error);
     }
-  };
-
-  const editTodo = (id) => {
-    setTodos(
-      todos.map((todo) => (todo.id === id ? { ...todo, isEdit: true } : todo))
-    );
-  };
-
-  const cancelEdit = (id) => {
-    setTodos(
-      todos.map((todo) => (todo.id === id ? { ...todo, isEdit: false } : todo))
-    );
   };
 
   const handleSearch = (e) => {
@@ -133,20 +125,24 @@ function App() {
   return (
     <>
       <div className={styles.container}>
-        <FormTodo requestAddTodo={requestAddTodo} />
         <div className={styles["wrapper-search-sorting"]}>
           <ButtonSorting handleSort={handleSort} />
           <SearchTodo valueSearch={valueSearch} handleSearch={handleSearch} />
         </div>
+        <FormTodo requestAddTodo={requestAddTodo} />
 
-        <TodoList
-          todos={todos}
-          requestUpdateTodo={requestUpdateTodo}
-          requestDeleteTodo={requestDeleteTodo}
-          editTodo={editTodo}
-          cancelEdit={cancelEdit}
-          isLoading={isLoading}
-        />
+        <Routes>
+          <Route path="/" element={<TodoList todos={todos} />} />
+          <Route
+            path="/todos/:id"
+            element={
+              <TodoPage
+                requestUpdateTodo={requestUpdateTodo}
+                requestDeleteTodo={requestDeleteTodo}
+              />
+            }
+          />
+        </Routes>
       </div>
     </>
   );

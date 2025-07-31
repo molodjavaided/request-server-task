@@ -1,24 +1,19 @@
 {
   "todos": [
     {
-      "title": "Решить проблему с поисковой строкой",
+      "title": "р",
       "completed": false,
       "id": 1
     },
     {
-      "title": "Пообедать",
+      "title": "два ",
       "completed": false,
       "id": 2
     },
     {
-      "title": "Пойти на работу",
+      "title": "Четыре задача",
       "completed": false,
       "id": 3
-    },
-    {
-      "title": "Начать решать задачу нового блока",
-      "completed": false,
-      "id": 4
     }
   ]
 }

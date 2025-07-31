@@ -1,13 +1,8 @@
 import styles from "./buttons.module.css";
 
-function ButtonDelete({ id, onDelete, isDeleting }) {
+function ButtonDelete({ handleDelete }) {
   return (
-    <button
-      className={styles["button-delete"]}
-      id={id}
-      onClick={() => onDelete(id)}
-      disabled={isDeleting}
-    >
+    <button className={styles["button-delete"]} onClick={handleDelete}>
       Delete
     </button>
   );

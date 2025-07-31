@@ -1,13 +1,9 @@
 import React from "react";
 import styles from "./buttons.module.css";
 
-function ButtonCancel({ id, cancelEdit }) {
+function ButtonCancel({ handleCancelEdit }) {
   return (
-    <button
-      className={styles["button-cancel"]}
-      id={id}
-      onClick={() => cancelEdit(id)}
-    >
+    <button className={styles["button-cancel"]} onClick={handleCancelEdit}>
       Cancel
     </button>
   );

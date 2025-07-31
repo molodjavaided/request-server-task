@@ -3,7 +3,7 @@ import styles from "./EditTodoForm.module.css";
 import ButtonUpdate from "../buttons/ButtonUpdate";
 import ButtonCancel from "../buttons/ButtonCancel";
 
-function EditTodoForm({ requestUpdateTodo, id, title, cancelEdit }) {
+function EditTodoForm({ id, title, handleCancelEdit, handleUpdate }) {
   const [value, setValue] = useState(title);
   const [isUpdating, setIsUpdating] = useState(false);
 
@@ -14,8 +14,11 @@ function EditTodoForm({ requestUpdateTodo, id, title, cancelEdit }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsUpdating(true);
-    await requestUpdateTodo(id, value);
-    setIsUpdating(false);
+    try {
+      await handleUpdate(id, value);
+    } finally {
+      setIsUpdating(false);
+    }
   };
 
   return (
@@ -32,7 +35,7 @@ function EditTodoForm({ requestUpdateTodo, id, title, cancelEdit }) {
           />
           <div className={styles.buttons}>
             <ButtonUpdate />
-            <ButtonCancel cancelEdit={cancelEdit} id={id} />
+            <ButtonCancel handleCancelEdit={handleCancelEdit} />
           </div>
         </form>
       )}
