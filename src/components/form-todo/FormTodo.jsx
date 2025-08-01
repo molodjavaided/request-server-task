@@ -1,10 +1,32 @@
 import React, { useState } from "react";
 import styles from "./FormTodo.module.css";
 import ButtonAdd from "../buttons/ButtonAdd";
+import { useNavigate } from "react-router-dom";
 
-function FormTodo({ requestAddTodo }) {
+function FormTodo() {
   const [value, setValue] = useState("");
   const [isAdd, setIsAdd] = useState(false);
+  const navigate = useNavigate();
+  const [error, setError] = useState(null);
+
+  const requestAddTodo = async (value) => {
+    try {
+      const response = await fetch("http://localhost:3000/todos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json;charset=utf-8" },
+        body: JSON.stringify({
+          title: value,
+          completed: false,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error("Ошибка в добавлении задачи");
+      }
+      navigate("/");
+    } catch (error) {
+      setError(error);
+    }
+  };
 
   const handleChange = (e) => {
     setValue(e.target.value);
@@ -18,6 +40,10 @@ function FormTodo({ requestAddTodo }) {
     setIsAdd(false);
     setValue("");
   };
+
+  if (error) {
+    return <h1>{error}</h1>;
+  }
 
   return (
     <>
