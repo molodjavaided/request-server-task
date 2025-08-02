@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./FormTodo.module.css";
 import ButtonAdd from "../buttons/ButtonAdd";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
-function FormTodo() {
+function FormTodo({ addTodo }) {
   const [value, setValue] = useState("");
   const [isAdd, setIsAdd] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [error, setError] = useState(null);
 
   const requestAddTodo = async (value) => {
@@ -22,7 +22,9 @@ function FormTodo() {
       if (!response.ok) {
         throw new Error("Ошибка в добавлении задачи");
       }
-      navigate("/");
+      const data = await response.json();
+      addTodo(data);
+      // navigate("/");
     } catch (error) {
       setError(error);
     }

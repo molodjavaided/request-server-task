@@ -54,10 +54,8 @@ function TodoPage() {
         throw new Error("Задача не обновлена");
       }
       const data = await response.json();
-      setTodo((prevTodos) =>
-        prevTodos.map((todo) => (todo.id === id ? data : todo))
-      );
-      navigate("/");
+      setTodo(data);
+      // navigate("/");
     } catch (error) {
       setError(error);
     }
@@ -71,7 +69,6 @@ function TodoPage() {
       if (!response.ok) {
         throw new Error("Ошибка в удалении задачи");
       }
-      setTodo((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
       navigate("/");
     } catch (error) {
       setError(error);

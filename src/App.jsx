@@ -31,16 +31,20 @@ function App() {
   return (
     <>
       <div className={styles.container}>
-        <div className={styles["wrapper-search-sorting"]}>
-          <ButtonSorting handleSort={handleSort} />
-          <SearchTodo valueSearch={valueSearch} handleSearch={handleSearch} />
-        </div>
-        <FormTodo />
         {!id ? (
-          <TodoList
-            sortByOrder={sortByOrder}
-            debouncedSearchTerm={debouncedSearchTerm}
-          />
+          <div className={styles.container}>
+            <div className={styles["wrapper-search-sorting"]}>
+              <ButtonSorting handleSort={handleSort} />
+              <SearchTodo
+                valueSearch={valueSearch}
+                handleSearch={handleSearch}
+              />
+            </div>
+            <TodoList
+              sortByOrder={sortByOrder}
+              debouncedSearchTerm={debouncedSearchTerm}
+            />
+          </div>
         ) : (
           <Outlet />
         )}

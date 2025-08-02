@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Todo from "../todo/Todo";
 import styles from "./TodoList.module.css";
+import FormTodo from "../form-todo/FormTodo";
 
 function TodoList({ sortByOrder, debouncedSearchTerm }) {
   const [todos, setTodos] = useState([]);
@@ -30,6 +31,10 @@ function TodoList({ sortByOrder, debouncedSearchTerm }) {
     fetchTodo(sortByOrder.path, sortByOrder.order, debouncedSearchTerm);
   }, [sortByOrder.path, sortByOrder.order, debouncedSearchTerm]);
 
+  const addTodo = (data) => {
+    return setTodos((prevTodos) => [...prevTodos, data]);
+  };
+
   if (isLoading) {
     return <div className={styles.loader}></div>;
   }
@@ -38,6 +43,7 @@ function TodoList({ sortByOrder, debouncedSearchTerm }) {
   }
   return (
     <>
+      <FormTodo addTodo={addTodo} />
       <ul className={styles.todolist}>
         {todos.map((todo) => (
           <Todo key={todo.id} id={todo.id} title={todo.title} />
