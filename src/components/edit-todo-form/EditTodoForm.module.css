@@ -1,0 +1,19 @@
+.form {
+  display: flex;
+}
+
+.buttons {
+  display: flex;
+}
+
+.button-update {
+  border-radius: 0;
+}
+
+.button-cancel {
+  border-radius: 0 10px 10px 0;
+}
+
+/* .updating {
+  color: #ee4848;
+} */

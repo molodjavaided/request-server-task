@@ -1,55 +1,25 @@
-import { useState } from "react";
-import TodoList from "./components/todolist/TodoList";
+import React from "react";
+import { useTodoContext } from "./context/Context";
+import { FormTodo, TodoList, SearchTodo, ButtonSort } from "./components";
 import styles from "./App.module.css";
-import FormTodo from "./components/form-todo/FormTodo";
-import SearchTodo from "./components/search-todo/SearchTodo";
-import ButtonSorting from "./components/buttons/ButtonSorting";
-import { useDebounce } from "@uidotdev/usehooks";
-import { Outlet, useParams } from "react-router-dom";
 
 function App() {
-  const [sortByOrder, setSortByOrder] = useState({
-    path: "title",
-    order: "desc",
-  });
-  const [valueSearch, setValueSearch] = useState("");
-  const { id } = useParams();
-
-  const debouncedSearchTerm = useDebounce(valueSearch, 500);
-
-  const handleSearch = (e) => {
-    setValueSearch(e.target.value);
-  };
-
-  const handleSort = () => {
-    setSortByOrder({
-      path: "title",
-      order: sortByOrder.order === "desc" ? "asc" : "desc",
-    });
-  };
+  const { error, isLoading, searchTerm, setSearchTerm } = useTodoContext();
 
   return (
-    <>
-      <div className={styles.container}>
-        {!id ? (
-          <div className={styles.container}>
-            <div className={styles["wrapper-search-sorting"]}>
-              <ButtonSorting handleSort={handleSort} />
-              <SearchTodo
-                valueSearch={valueSearch}
-                handleSearch={handleSearch}
-              />
-            </div>
-            <TodoList
-              sortByOrder={sortByOrder}
-              debouncedSearchTerm={debouncedSearchTerm}
-            />
-          </div>
-        ) : (
-          <Outlet />
-        )}
+    <div className={styles.container}>
+      <FormTodo />
+      <div className={styles["wrapper-search-sorting"]}>
+        <ButtonSort />
+        <SearchTodo value={searchTerm} onChange={setSearchTerm} />
       </div>
-    </>
+      {error && <div className={styles.error}>{error}</div>}
+      {isLoading ? (
+        <div className={styles.loading}>Загружаем задачи...</div>
+      ) : (
+        <TodoList />
+      )}
+    </div>
   );
 }
 

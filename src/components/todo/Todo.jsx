@@ -1,19 +1,29 @@
 import styles from "./Todo.module.css";
-import { Link } from "react-router-dom";
+import React from "react";
+import { useTodoContext } from "../../context/Context";
 
-function Todo({ id, title }) {
-  const croppedTitle =
-    title.length > 35 ? title.substring(0, 35) + "..." : title;
+export function Todo({ todo }) {
+  const { handleDeleteTodo, startEditing } = useTodoContext();
+
+  const onUpdate = () => {
+    startEditing(todo.id);
+  };
+
+  const onDelete = () => {
+    handleDeleteTodo(todo.id);
+  };
 
   return (
-    <>
-      <li className={styles.todo}>
-        <Link to={`/todos/${id}`} className={styles.title}>
-          {croppedTitle}
-        </Link>
-      </li>
-    </>
+    <li className={styles.todo}>
+      <div className={styles.title}>{todo.title}</div>
+      <div className={styles.buttons}>
+        <button className={styles["button-update"]} onClick={onUpdate}>
+          Update
+        </button>
+        <button className={styles["button-delete"]} onClick={onDelete}>
+          Delete
+        </button>
+      </div>
+    </li>
   );
 }
-
-export default Todo;

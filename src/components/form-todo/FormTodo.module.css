@@ -1,8 +1,13 @@
-.form {
+.form-todo {
   display: flex;
 }
 
-.addendum {
+.button-add {
+  width: 170px;
+  border-radius: 0 10px 10px 0;
+}
+
+.add-todo {
   display: flex;
   margin: 50px;
   width: 385px;

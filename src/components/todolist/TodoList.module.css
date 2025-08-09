@@ -1,7 +1,11 @@
-.todolist {
+.todo-list {
   display: flex;
   flex-direction: column;
   gap: 20px;
   text-decoration: none;
   padding-inline-start: 0px;
+}
+
+.todo-status {
+  color: red;
 }

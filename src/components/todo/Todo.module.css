@@ -3,10 +3,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 15px;
-}
-
-a {
-  cursor: pointer;
+  min-width: 400px;
 }
 
 .title {
@@ -19,10 +16,41 @@ a {
   word-break: break-all;
   box-shadow: 3px 3px 5px rgb(0, 0, 0, 0.2);
 }
+
 .buttons {
   display: flex;
 }
 
+.button-update {
+  border-radius: 10px 0 0 10px;
+}
+
+.button-delete {
+  border-radius: 0 10px 10px 0;
+}
+
 .deleting {
   color: #ee4848;
+}
+
+.loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 25px;
+  height: 25px;
+  border: 5px solid rgb(255, 105, 130);
+  border-radius: 50%;
+  border-left-color: transparent;
+  animation: loader 2s infinite;
+}
+
+@keyframes loader {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
