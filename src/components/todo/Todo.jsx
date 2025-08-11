@@ -14,7 +14,7 @@ export function Todo({ todo }) {
   };
 
   return (
-    <li className={styles.todo}>
+    <div className={styles.todo}>
       <div className={styles.title}>{todo.title}</div>
       <div className={styles.buttons}>
         <button className={styles["button-update"]} onClick={onUpdate}>
@@ -24,6 +24,6 @@ export function Todo({ todo }) {
           Delete
         </button>
       </div>
-    </li>
+    </div>
   );
 }
