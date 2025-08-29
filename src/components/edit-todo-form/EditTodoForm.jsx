@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import styles from "./EditTodoForm.module.css";
-import { useTodoContext } from "../../context/Context";
+import { useState } from "react";
+import { cancelEditing, updateTodo } from "../../store/actions";
 
 export function EditTodoForm({ todo }) {
-  const { handleUpdateTodo, cancelEditing } = useTodoContext();
+  const dispatch = useDispatch();
   const [title, setTitle] = useState(todo.title);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!title.trim()) return;
-    handleUpdateTodo(todo.id, title);
+    dispatch(updateTodo(todo.id, title));
   };
 
   const handleChange = (e) => {
@@ -17,7 +18,7 @@ export function EditTodoForm({ todo }) {
   };
 
   const onCancel = () => {
-    cancelEditing();
+    dispatch(cancelEditing());
   };
 
   return (

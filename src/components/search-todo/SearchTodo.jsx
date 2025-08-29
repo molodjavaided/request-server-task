@@ -1,10 +1,19 @@
 import styles from "./SearchTodo.module.css";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { setSearchTerm } from "../../store/actions/filterActions";
 
-export function SearchTodo({ value, onChange }) {
+export function SearchTodo({ value }) {
+  const dispatch = useDispatch();
+
   const handleChange = (e) => {
-    onChange(e.target.value);
+    const term = e.target.value;
+    dispatch(setSearchTerm(term));
+    // if (onChange) {
+    //   onChange(term);
+    // }
   };
+
   return (
     <input
       type="text"

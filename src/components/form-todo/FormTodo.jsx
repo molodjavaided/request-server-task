@@ -1,26 +1,26 @@
 import { useState } from "react";
-import { useTodoContext } from "../../context/Context";
+import { useDispatch, useSelector } from "react-redux";
+import { addTodo } from "../../store/actions/todos/addTodo";
 import styles from "./FormTodo.module.css";
 
 export function FormTodo() {
-  const { handleAddTodo, isAdding } = useTodoContext();
+  const dispatch = useDispatch();
+  const isAdding = useSelector((state) => state.ui.isAddingTodo);
   const [title, setTitle] = useState("");
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!title.trim()) return;
-    await handleAddTodo(title);
-    setTitle("");
-  };
 
   const handleChange = (e) => {
     setTitle(e.target.value);
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!title.trim()) return;
+    await dispatch(addTodo(title));
+    setTitle("");
+  };
+
   if (isAdding) {
-    return (
-      <div className={styles["add-todo"]}>Добавляем задачу в список...</div>
-    );
+    return <div className={styles["add-todo"]}>Добавляем задачу...</div>;
   }
 
   return (

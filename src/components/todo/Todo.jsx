@@ -1,16 +1,16 @@
 import styles from "./Todo.module.css";
-import React from "react";
-import { useTodoContext } from "../../context/Context";
+import { useDispatch } from "react-redux";
+import { deleteTodo, startEditing } from "../../store/actions";
 
 export function Todo({ todo }) {
-  const { handleDeleteTodo, startEditing } = useTodoContext();
+  const dispatch = useDispatch();
 
   const onUpdate = () => {
-    startEditing(todo.id);
+    dispatch(startEditing(todo.id));
   };
 
   const onDelete = () => {
-    handleDeleteTodo(todo.id);
+    dispatch(deleteTodo(todo.id));
   };
 
   return (

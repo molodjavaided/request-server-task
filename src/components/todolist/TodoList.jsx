@@ -1,10 +1,13 @@
 import React from "react";
 import { Todo, EditTodoForm } from "../../components";
 import styles from "./TodoList.module.css";
-import { useTodoContext } from "../../context/Context";
+import { useSelector } from "react-redux";
 
 export function TodoList() {
-  const { todos, editingId, updatingIds, deletingIds } = useTodoContext();
+  const todos = useSelector((state) => state.todos);
+  const editingId = useSelector((state) => state.ui.editingId);
+  const updatingIds = useSelector((state) => state.ui.updatingIds);
+  const deletingIds = useSelector((state) => state.ui.deletingIds);
 
   const renderTodo = (todo) => {
     if (editingId === todo.id) return <EditTodoForm todo={todo} />;
